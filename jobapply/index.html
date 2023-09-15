@@ -1,17 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    <form>
-        <input type="text" name="text_in" id="text_in">
-        <button type="submit">Check</button>
+  </head>
+  <body>
+    <form id="post">
+      <input type="text" name="text_in" id="text_in" />
+      <button type="submit">Check</button>
     </form>
-    <pre style="z-index: 999;color: rgb(0, 255, 0);background-color: black;padding: 0.6vh;">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos, esse dicta nesciunt adipisci aliquid ducimus tempora ratione nihil error, laborum, sunt quaerat perspiciatis quia ipsa quo doloribus repellendus earum recusandae.
-    </pre>
-</body>
+    <pre
+      id="outputText"
+      style="
+        z-index: 999;
+        color: rgb(0, 255, 0);
+        background-color: black;
+        padding: 0.6vh;
+      "
+    ></pre>
+    <script>
+      var count = 0;
+      function alienToInteger(alienNumeral) {
+        const alienValues = {
+          A: 1,
+          B: 5,
+          Z: 10,
+          L: 50,
+          C: 100,
+          D: 500,
+          R: 1000,
+        };
+
+        let result = 0;
+        let prevValue = 0;
+        let explanationArr = [];
+
+        for (let i = 0; i < alienNumeral.length; i++) {
+          const symbol = alienNumeral[i];
+          const value = alienValues[symbol];
+
+          if (value > prevValue) {
+            result += value - 2 * prevValue;
+          } else {
+            result += value;
+          }
+          explanationArr += symbol;
+          prevValue = value;
+        }
+        count++;
+        return { value: result, explanation: explanationArr };
+      }
+      
+      var form = document.getElementById("post");
+      var inputElement = document.getElementById("text_in");
+      var outputElement = document.getElementById("outputText");
+      inputElement.addEventListener("input", function () {
+        this.value = this.value.toUpperCase();
+      });
+      // Add a submit event listener to the form
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        // const result = alienToInteger("LBAAA");
+        let result = alienToInteger(inputElement.value);
+        outputElement.textContent += count + " : " + result.value + "\r\n";
+        outputElement.textContent +=
+          count + " : " + result.explanation + "\r\n";
+      });
+    </script>
+  </body>
 </html>
